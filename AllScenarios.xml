@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="ALL Scenarios">
+    <parameter name="browser" value=""/>
+
+    <test name="loginWithValidData ">
+        <classes>
+            <class name="testcases.TC01_Login">
+                <methods>
+                    <include name="loginWithValidData_P"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="createNewCustomer ">
+        <classes>
+            <class name="testcases.TC02_CreateNewCustomer">
+                <methods>
+                    <include name="createNewCustomer"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="editCustomer ">
+        <classes>
+            <class name="testcases.TC03_EditCustomer">
+                <methods>
+                    <include name="editCustomer"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="deleteCustomer ">
+        <classes>
+            <class name="testcases.TC04_Delete_Customer">
+                <methods>
+                    <include name="deleteCustomer"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="AddNewAccount ">
+        <classes>
+            <class name="testcases.TC05_New_Account">
+                <methods>
+                    <include name="addNewAccount"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="EditAccount ">
+        <classes>
+            <class name="testcases.TC06_Edit_Account">
+                <methods>
+                    <include name="editAccount"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Delete Account ">
+        <classes>
+            <class name="testcases.TC07_DeleteAccount">
+                <methods>
+                    <include name="deleteAccount"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
