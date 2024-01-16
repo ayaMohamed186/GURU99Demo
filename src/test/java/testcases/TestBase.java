@@ -8,8 +8,6 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.github.javafaker.Faker;
 import common.MyScreenRecorder;
 import drivers.DriverFactory;
-import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
 import org.testng.Reporter;
@@ -22,10 +20,8 @@ import java.util.concurrent.TimeUnit;
 
 import static drivers.DriverHolder.setDriver;
 
-@Listeners()
 public class TestBase {
     WebDriver driver;
-
     protected static ExtentSparkReporter htmlReporter;
     protected static ExtentReports extent;
     protected static ExtentTest test;
@@ -33,14 +29,13 @@ public class TestBase {
     private static String PROJECT_URL = null;
     static Properties prop;
     static FileInputStream readProperty;
+
     static Faker faker = new Faker();
-    protected Logger log;
 
     @BeforeSuite
     public void defineSuite() throws Exception {
-        DOMConfigurator.configure(System.getProperty("user.dir") + "/log4j.xml");
-        log = Logger.getLogger(getClass());
-        MyScreenRecorder.startRecording("Guru99 Bank");
+        MyScreenRecorder.startRecording("OrangeHRM");
+
         // initialize the HtmlReporter
         htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/testReport.html");
 
@@ -60,7 +55,7 @@ public class TestBase {
         htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
     }
 
-    private void setProjectDetails() throws IOException {
+    private void setProjectDetails() throws IOException, IOException {
         // TODO: Step1: define object of properties file
         readProperty = new FileInputStream(
                 System.getProperty("user.dir") + "/src/test/resources/properties/environment.properties");
@@ -73,19 +68,19 @@ public class TestBase {
     }
 
     @Parameters("browser")
+
     @BeforeTest
     public void setupDriver(String browser) {
         driver = DriverFactory.getNewInstance(browser);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         setDriver(driver);
-
         driver.get(PROJECT_URL);
     }
 
     @AfterTest
     public void tearDown() {
         driver.quit();
-        Thread.currentThread().interrupt();
+        Thread.currentThread().interrupt(); // after driver close , close opened thread which open in each run
     }
 
     @AfterSuite
@@ -98,13 +93,14 @@ public class TestBase {
     public void getResult(ITestResult result) {
         if (result.getStatus() == ITestResult.FAILURE) {
             test.log(Status.FAIL, result.getName() + " failed with the following error: " + result.getThrowable());
-            Reporter.log("Failed to perform " + result.getName(), 10, true);
+            Reporter.log("Failed to perform "+result.getName(), 10, true);
         } else if (result.getStatus() == ITestResult.SUCCESS) {
             test.log(Status.PASS, result.getName());
-            Reporter.log("Successfully perform " + result.getName(), 10, true);
+            Reporter.log("Successfully perform "+result.getName(), 10, true);
         } else {
             test.log(Status.SKIP, result.getName());
-            Reporter.log("Skip " + result.getName(), 10, true);
+            Reporter.log("Skip "+result.getName(), 10, true);
         }
     }
+
 }
